@@ -1,0 +1,39 @@
+import xml.etree.ElementTree as ET
+from xml.etree.ElementTree import ElementTree
+from xml.etree.ElementTree import Element
+from xml.etree.ElementTree import SubElement
+
+data_dir = "D:/Storage/data/bdd100k_labels_release/bdd100k/labels/new/"
+os.chdir(data_dir)
+
+#Start here, provide path to data dir, can iterate through dir like code provided below
+
+for i, filename in enumerate (os.listdir(data_dir)):
+    if (i > 0):
+        break
+    file = filename
+    print(file)
+
+tree = ET.parse(os.path.join(data_dir, file)) 
+#print(ET.tostring(root, encoding='utf8').decode('utf8'))
+root = tree.getroot()
+#print(root.tag, root.attrib)
+obj = []
+
+size = root.find('size')
+w = int(size.find('width').text)
+h = int(size.find('height').text)
+
+print( w, h)
+
+#print(root.findall("object"))
+
+#loop for all object name
+for e in root.findall('object/name'):
+    #print(e.text)
+#loop for adding all bounding box dimensions
+for i, e in enumerate(root.findall('object/bndbox')):
+    obj.append(i)
+    for a in e:
+        obj.append(a.text)
+print(obj)
